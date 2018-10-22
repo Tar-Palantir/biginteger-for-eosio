@@ -5,7 +5,8 @@
 #define BIGINTEGERUTILS_H
 
 #include "BigInteger.hpp"
-#include <eoslib/string.hpp>
+#include <string>
+using std::string;
 //swapnibble #include <iostream>
 
 /* This file provides:
@@ -13,10 +14,10 @@
  * - eosio::ostream << operators for BigUnsigned/BigInteger */
 
 // eosio::string conversion routines.  Base 10 only.
-eosio::string bigUnsignedToString( const BigUnsigned &x);
-eosio::string bigIntegerToString( const BigInteger &x);
-BigUnsigned stringToBigUnsigned( const eosio::string &s);
-BigInteger stringToBigInteger( const eosio::string &s);
+string bigUnsignedToString( const BigUnsigned &x);
+string bigIntegerToString( const BigInteger &x);
+BigUnsigned stringToBigUnsigned( const string &s);
+BigInteger stringToBigInteger( const string &s);
 
 // Creates a BigInteger from data such as `char's; read below for details.
 template <class T>

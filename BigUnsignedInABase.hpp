@@ -6,7 +6,9 @@
 
 #include "NumberlikeArray.hpp"
 #include "BigUnsigned.hpp"
-#include <eoslib/string.hpp>//#include <string>
+#include <string>
+
+using std::string;
 
 /*
  * A BigUnsignedInABase object represents a nonnegative integer of size limited
@@ -32,7 +34,6 @@
  * equality test.  Use BigUnsigned for arithmetic.
  */
 class BigUnsignedInABase : protected NumberlikeArray<unsigned short> {
-
 public:
 	// The digits of a BigUnsignedInABase are unsigned shorts.
 	typedef unsigned short Digit;
@@ -93,8 +94,8 @@ public:
 	 * If you want different conventions, write your own routines to go
 	 * between BigUnsignedInABase and strings.  It's not hard.
 	 */
-	operator eosio::string() const;
-	BigUnsignedInABase(const eosio::string &s, Base base);
+	operator string() const;
+	BigUnsignedInABase(const string &s, Base base);
 
 public:
 

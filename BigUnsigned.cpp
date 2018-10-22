@@ -192,8 +192,8 @@ void BigUnsigned::subtract(const BigUnsigned &a, const BigUnsigned &b) {
 		operator =(a);
 		return;
 	} else {
-		
-		assert( a.len >= b.len, "BigUnsigned::subtract: Negative result in unsigned calculation");
+
+		eosio_assert( a.len >= b.len, "BigUnsigned::subtract: Negative result in unsigned calculation");
 		//swapnibble
 		/*
 		if (a.len < b.len)
@@ -235,7 +235,7 @@ void BigUnsigned::subtract(const BigUnsigned &a, const BigUnsigned &b) {
 	if (borrowIn) {
 		len = 0;
 		//swapnibble throw "BigUnsigned::subtract: Negative result in unsigned calculation";
-		assert(0, "BigUnsigned::subtract: Negative result in unsigned calculation");
+		eosio_assert(0, "BigUnsigned::subtract: Negative result in unsigned calculation");
 	} else
 		// Copy over the rest of the blocks
 		for (; i < a.len; i++)
@@ -398,7 +398,7 @@ void BigUnsigned::divideWithRemainder(const BigUnsigned &b, BigUnsigned &q) {
 	 * It would be silly to try to write quotient and remainder to the
 	 * same variable.  Rule that out right away. */
 	//swapnibble
-	assert( this != &q
+	eosio_assert( this != &q
 		, "BigUnsigned::divideWithRemainder: Cannot write quotient and remainder into the same variable");
 	// if (this == &q)
 	// 	throw "BigUnsigned::divideWithRemainder: Cannot write quotient and remainder into the same variable";
@@ -612,7 +612,7 @@ void BigUnsigned::bitShiftLeft(const BigUnsigned &a, int b) {
 	DTRT_ALIASED(this == &a, bitShiftLeft(a, b));
 	if (b < 0) {
 		//swapnibble
-		assert( b << 1 != 0, "BigUnsigned::bitShiftLeft: Pathological shift amount not implemented" );
+		eosio_assert( b << 1 != 0, "BigUnsigned::bitShiftLeft: Pathological shift amount not implemented" );
 
 		bitShiftRight(a, -b);
 		return;
@@ -645,7 +645,7 @@ void BigUnsigned::bitShiftRight(const BigUnsigned &a, int b) {
 	DTRT_ALIASED(this == &a, bitShiftRight(a, b));
 	if (b < 0) {
 		//swapnibble
-		assert( b << 1 != 0, "BigUnsigned::bitShiftRight: Pathological shift amount not implemented" );
+		eosio_assert( b << 1 != 0, "BigUnsigned::bitShiftRight: Pathological shift amount not implemented" );
 
 		bitShiftLeft(a, -b);
 		return;
@@ -683,7 +683,8 @@ void BigUnsigned::bitShiftRight(const BigUnsigned &a, int b) {
 }
 
 void BigUnsigned::print() const {
-	bigUnsignedToString(*this).print();
+	string str = bigUnsignedToString(*this);
+	eosio::print(str);
 }
 
 // INCREMENT/DECREMENT OPERATORS
@@ -712,7 +713,7 @@ void BigUnsigned::operator ++(int) {
 // Prefix decrement
 void BigUnsigned::operator --() {
 	//swapnibble
-	assert( len != 0, "BigUnsigned::operator --(): Cannot decrement an unsigned zero");
+	eosio_assert( len != 0, "BigUnsigned::operator --(): Cannot decrement an unsigned zero");
 	// if (len == 0)
 	// 	throw "BigUnsigned::operator --(): Cannot decrement an unsigned zero";
 
@@ -754,7 +755,7 @@ void BigUnsigned::operator --(int) {
 }
  BigUnsigned BigUnsigned::operator /(const BigUnsigned &x) const {
 	// swapnibble if (x.isZero()) throw "BigUnsigned::operator /: division by zero";
-	assert( !x.isZero(), "BigUnsigned::operator /: division by zero");
+	eosio_assert( !x.isZero(), "BigUnsigned::operator /: division by zero");
 
 	BigUnsigned q, r;
 	r = *this;
@@ -763,7 +764,7 @@ void BigUnsigned::operator --(int) {
 }
  BigUnsigned BigUnsigned::operator %(const BigUnsigned &x) const {
 	// swapnibble if (x.isZero()) throw "BigUnsigned::operator %: division by zero";
-	assert( !x.isZero(), "BigUnsigned::operator %: division by zero");
+	eosio_assert( !x.isZero(), "BigUnsigned::operator %: division by zero");
 	BigUnsigned q, r;
 	r = *this;
 	r.divideWithRemainder(x, q);
@@ -806,7 +807,7 @@ void BigUnsigned::operator --(int) {
 }
  void BigUnsigned::operator /=(const BigUnsigned &x) {
 	// swapnibble if (x.isZero()) throw "BigUnsigned::operator /=: division by zero";
-	assert( !x.isZero(), "BigUnsigned::operator /=: division by zero");
+	eosio_assert( !x.isZero(), "BigUnsigned::operator /=: division by zero");
 	/* The following technique is slightly faster than copying *this first
 	 * when x is large. */
 	BigUnsigned q;
@@ -816,7 +817,7 @@ void BigUnsigned::operator --(int) {
 }
  void BigUnsigned::operator %=(const BigUnsigned &x) {
 	// swapnibble if (x.isZero()) throw "BigUnsigned::operator %=: division by zero";
-	assert( !x.isZero(), "BigUnsigned::operator %=: division by zero");
+	eosio_assert( !x.isZero(), "BigUnsigned::operator %=: division by zero");
 	BigUnsigned q;
 	// Mods *this by x.  Don't care about quotient left in q.
 	divideWithRemainder(x, q);

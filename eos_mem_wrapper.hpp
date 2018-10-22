@@ -6,7 +6,7 @@
 #ifndef __EOS_MEM_WRAPPER_H__
 #define __EOS_MEM_WRAPPER_H__
 
-#include <eoslib/memory.hpp>
+#include <eosiolib/memory.hpp>
 
 void* operator new (unsigned int size);
 void* operator new[] (unsigned int size);

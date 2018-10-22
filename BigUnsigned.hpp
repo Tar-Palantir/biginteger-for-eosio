@@ -4,8 +4,8 @@
 #ifndef BIGUNSIGNED_H
 #define BIGUNSIGNED_H
 
-#include <eoslib/system.h>
-#include <eoslib/print.hpp>
+#include <eosiolib/system.h>
+#include <eosiolib/print.hpp>
 #include "NumberlikeArray.hpp"
 #include "eos_mem_wrapper.hpp"
 
@@ -269,7 +269,7 @@ void BigUnsigned::initFromPrimitive(X x) {
 	else {
 		// Create a single block.  blk is NULL; no need to delete it.
 		cap = 1;
-		blk = (Blk*) eosio::malloc(sizeof(Blk));//swapnibble new Blk[1];
+		blk = (Blk*) malloc(sizeof(Blk));//swapnibble new Blk[1];
 		len = 1;
 		blk[0] = Blk(x);
 	}
@@ -289,7 +289,7 @@ void BigUnsigned::initFromSignedPrimitive(X x) {
 	else
 		initFromPrimitive(x);
 		*/
-	assert( x >= 0, "BigUnsigned constructor: Cannot construct a BigUnsigned from a negative number");
+	eosio_assert( x >= 0, "BigUnsigned constructor: Cannot construct a BigUnsigned from a negative number");
 
 	initFromPrimitive(x);
 }
@@ -317,7 +317,7 @@ X BigUnsigned::convertToPrimitive() const {
 	//swapnibble
 	// throw "BigUnsigned::to<Primitive>: "
 	// 	"Value is too big to fit in the requested type";
-	assert( 0, "BigUnsigned::to<Primitive>: Value is too big to fit in the requested type");
+	eosio_assert( 0, "BigUnsigned::to<Primitive>: Value is too big to fit in the requested type");
 	return 0;
 }
 
@@ -338,7 +338,7 @@ X BigUnsigned::convertToSignedPrimitive() const {
 			"Value is too big to fit in the requested type";
 	*/
 
-	assert( x < 0, "BigUnsigned::to(Primitive): Value is too big to fit in the requested type");
+	eosio_assert( x < 0, "BigUnsigned::to(Primitive): Value is too big to fit in the requested type");
 
 	return x;
 }

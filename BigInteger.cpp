@@ -3,6 +3,7 @@
  */
 
 #include "BigInteger.hpp"
+#include "BigIntegerUtils.hpp"
 
 void BigInteger::operator =(const BigInteger &x) {
 	// Calls like a = a have no effect
@@ -18,7 +19,7 @@ BigInteger::BigInteger(const Blk *b, Index blen, Sign s) : mag(b, blen) {
 	switch (s) {
 	case zero:
 		//swapnibble
-		assert( mag.isZero()
+		eosio_assert( mag.isZero()
 			,"BigInteger::BigInteger(const Blk *, Index, Sign): Cannot use a sign of zero with a nonzero magnitude");
 		// if (!mag.isZero())
 		// 	throw "BigInteger::BigInteger(const Blk *, Index, Sign): Cannot use a sign of zero with a nonzero magnitude";
@@ -33,7 +34,7 @@ BigInteger::BigInteger(const Blk *b, Index blen, Sign s) : mag(b, blen) {
 		/* g++ seems to be optimizing out this case on the assumption
 		 * that the sign is a valid member of the enumeration.  Oh well. */
 		//swapnibble throw "BigInteger::BigInteger(const Blk *, Index, Sign): Invalid sign";
-		assert( 0, "BigInteger::BigInteger(const Blk *, Index, Sign): Invalid sign");
+		eosio_assert( 0, "BigInteger::BigInteger(const Blk *, Index, Sign): Invalid sign");
 		break;
 	}
 }
@@ -42,7 +43,7 @@ BigInteger::BigInteger(const BigUnsigned &x, Sign s) : mag(x) {
 	switch (s) {
 	case zero:
 		//swapnibble
-		assert( mag.isZero()
+		eosio_assert( mag.isZero()
 			,"BigInteger::BigInteger(const BigUnsigned &, Sign): Cannot use a sign of zero with a nonzero magnitude");
 
 		// if (!mag.isZero())
@@ -58,7 +59,7 @@ BigInteger::BigInteger(const BigUnsigned &x, Sign s) : mag(x) {
 		/* g++ seems to be optimizing out this case on the assumption
 		 * that the sign is a valid member of the enumeration.  Oh well. */
 		//swapnibble throw "BigInteger::BigInteger(const BigUnsigned &, Sign): Invalid sign";
-		assert( 0, "BigInteger::BigInteger(const BigUnsigned &, Sign): Invalid sign");
+		eosio_assert( 0, "BigInteger::BigInteger(const BigUnsigned &, Sign): Invalid sign");
 		break;
 	}
 }
@@ -92,7 +93,7 @@ X convertBigUnsignedToPrimitiveAccess(const BigUnsigned &a) {
 template <class X>
 X BigInteger::convertToUnsignedPrimitive() const {
 	//swapnibble
-	assert( sign != negative
+	eosio_assert( sign != negative
 		, "BigInteger::to<Primitive>: Cannot convert a negative integer to an unsigned type");
 
 	return convertBigUnsignedToPrimitiveAccess<X>(mag);
@@ -130,7 +131,7 @@ X BigInteger::convertToSignedPrimitive() const {
 
 	// throw "BigInteger::to<Primitive>: "
 	// 	"Value is too big to fit in the requested type";
-	assert(0, "BigInteger::to<Primitive>: Value is too big to fit in the requested type");
+	eosio_assert(0, "BigInteger::to<Primitive>: Value is too big to fit in the requested type");
 	return 0;
 }
 
@@ -160,7 +161,7 @@ BigInteger::CmpRes BigInteger::compareTo(const BigInteger &x) const {
 		return CmpRes(-mag.compareTo(x.mag));
 	default:
 		//swapnibble throw "BigInteger internal error";
-		assert( 0, "BigInteger internal error");
+		eosio_assert( 0, "BigInteger internal error");
 		break;
 	}
 }
@@ -292,7 +293,7 @@ void BigInteger::multiply(const BigInteger &a, const BigInteger &b) {
 void BigInteger::divideWithRemainder(const BigInteger &b, BigInteger &q) {
 	// Defend against aliased calls;
 	// same idea as in BigUnsigned::divideWithRemainder .
-	assert( this != &q, "BigInteger::divideWithRemainder: Cannot write quotient and remainder into the same variable");
+	eosio_assert( this != &q, "BigInteger::divideWithRemainder: Cannot write quotient and remainder into the same variable");
 	// if (this == &q)
 	// 	throw "BigInteger::divideWithRemainder: Cannot write quotient and remainder into the same variable";
 
@@ -383,7 +384,8 @@ void BigInteger::negate(const BigInteger &a) {
 
 // print() override..
 void BigInteger::print() const {
-	bigIntegerToString(*this).print();
+	string str = bigIntegerToString(*this);
+	eosio::print(str);
 }
 
 // INCREMENT/DECREMENT OPERATORS
@@ -444,7 +446,7 @@ void BigInteger::operator --(int) {
 }
  BigInteger BigInteger::operator /(const BigInteger &x) const {
 	//swapnibble if (x.isZero()) throw "BigInteger::operator /: division by zero";
-	assert( !x.isZero(), "BigInteger::operator /: division by zero");
+	eosio_assert( !x.isZero(), "BigInteger::operator /: division by zero");
 	BigInteger q, r;
 	r = *this;
 	r.divideWithRemainder(x, q);
@@ -452,7 +454,7 @@ void BigInteger::operator --(int) {
 }
  BigInteger BigInteger::operator %(const BigInteger &x) const {
 	//swapnibble if (x.isZero()) throw "BigInteger::operator %: division by zero";
-	assert( !x.isZero(), "BigInteger::operator %: division by zero");
+	eosio_assert( !x.isZero(), "BigInteger::operator %: division by zero");
 	BigInteger q, r;
 	r = *this;
 	r.divideWithRemainder(x, q);
@@ -482,7 +484,7 @@ void BigInteger::operator --(int) {
 }
  void BigInteger::operator /=(const BigInteger &x) {
 	//if (x.isZero()) throw "BigInteger::operator /=: division by zero";
-	assert( !x.isZero(), "BigInteger::operator /=: division by zero");
+	eosio_assert( !x.isZero(), "BigInteger::operator /=: division by zero");
 
 	/* The following technique is slightly faster than copying *this first
 	 * when x is large. */
@@ -493,7 +495,7 @@ void BigInteger::operator --(int) {
 }
  void BigInteger::operator %=(const BigInteger &x) {
 	//if (x.isZero()) throw "BigInteger::operator %=: division by zero";
-	assert( !x.isZero(), "BigInteger::operator %=: division by zero");
+	eosio_assert( !x.isZero(), "BigInteger::operator %=: division by zero");
 
 	BigInteger q;
 	// Mods *this by x.  Don't care about quotient left in q.
