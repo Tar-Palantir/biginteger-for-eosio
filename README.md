@@ -12,7 +12,7 @@ BigInteger library for EOS Smart Contract
 <a name="what_is_this"></a>
 You can use this library in a EOS Smart contract to do arithmetic without any precision limit.
 
-This library has been tested on EOS.IO DAWN 2.x .
+This library has been tested on EOS.IO DAWN 4.x .
 See [EOSIO github](https://github.com/EOSIO/eos).
 
 <a name="original_author"></a>
@@ -39,7 +39,7 @@ bit : &amp;, |, ^, <<=, >>= , etc.. ( see header for more details )
 
 <a name="build"></a>
 ## Build
-`eoscpp -o <wastOutput.wast> <yourContractSrc.cpp> eos_mem_wrapper.cpp BigInteger.cpp BigIntegerAlgorithms.cpp BigIntegerUtils.cpp BigUnsigned.cpp BigUnsignedInABase.cpp`
+`eosio-cpp -o <wastOutput.wast> <yourContractSrc.cpp> 
 
 If linker complains about memory_heap variable, then change as followings:  
 
