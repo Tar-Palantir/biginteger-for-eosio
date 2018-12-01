@@ -171,7 +171,7 @@ BigInteger::CmpRes BigInteger::compareTo(const BigInteger &x) const {
  * then call one of BigUnsigned's copy-less operations. */
 
 // See remarks about aliased calls in BigUnsigned.cc .
-#define DTRT_ALIASED(cond, op) \
+#define BigInteger_DTRT_ALIASED(cond, op) \
 	if (cond) { \
 		BigInteger tmpThis; \
 		tmpThis.op; \
@@ -180,7 +180,7 @@ BigInteger::CmpRes BigInteger::compareTo(const BigInteger &x) const {
 	}
 
 void BigInteger::add(const BigInteger &a, const BigInteger &b) {
-	DTRT_ALIASED(this == &a || this == &b, add(a, b));
+	BigInteger_DTRT_ALIASED(this == &a || this == &b, add(a, b));
 	// If one argument is zero, copy the other.
 	if (a.sign == zero)
 		operator =(b);
@@ -216,7 +216,7 @@ void BigInteger::add(const BigInteger &a, const BigInteger &b) {
 void BigInteger::subtract(const BigInteger &a, const BigInteger &b) {
 	// Notice that this routine is identical to BigInteger::add,
 	// if one replaces b.sign by its opposite.
-	DTRT_ALIASED(this == &a || this == &b, subtract(a, b));
+	BigInteger_DTRT_ALIASED(this == &a || this == &b, subtract(a, b));
 	// If a is zero, copy b and flip its sign.  If b is zero, copy a.
 	if (a.sign == zero) {
 		mag = b.mag;
@@ -254,7 +254,7 @@ void BigInteger::subtract(const BigInteger &a, const BigInteger &b) {
 }
 
 void BigInteger::multiply(const BigInteger &a, const BigInteger &b) {
-	DTRT_ALIASED(this == &a || this == &b, multiply(a, b));
+	BigInteger_DTRT_ALIASED(this == &a || this == &b, multiply(a, b));
 	// If one object is zero, copy zero and return.
 	if (a.sign == zero || b.sign == zero) {
 		sign = zero;
@@ -375,7 +375,7 @@ void BigInteger::divideWithRemainder(const BigInteger &b, BigInteger &q) {
 
 // Negation
 void BigInteger::negate(const BigInteger &a) {
-	DTRT_ALIASED(this == &a, negate(a));
+	BigInteger_DTRT_ALIASED(this == &a, negate(a));
 	// Copy a's magnitude
 	mag = a.mag;
 	// Copy the opposite of a.sign
@@ -384,7 +384,7 @@ void BigInteger::negate(const BigInteger &a) {
 
 // print() override..
 void BigInteger::print() const {
-	string str = bigIntegerToString(*this);
+	const string str = bigIntegerToString(*this);
 	eosio::print(str);
 }
 

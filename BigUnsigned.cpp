@@ -115,7 +115,7 @@ BigUnsigned::CmpRes BigUnsigned::compareTo(const BigUnsigned &x) const {
  * copy, but my reasoning would need to be verified very carefully.  For now
  * I'll leave in the copy.
  */
-#define DTRT_ALIASED(cond, op) \
+#define BigUnsigned_DTRT_ALIASED(cond, op) \
 	if (cond) { \
 		BigUnsigned tmpThis; \
 		tmpThis.op; \
@@ -126,7 +126,7 @@ BigUnsigned::CmpRes BigUnsigned::compareTo(const BigUnsigned &x) const {
 
 
 void BigUnsigned::add(const BigUnsigned &a, const BigUnsigned &b) {
-	DTRT_ALIASED(this == &a || this == &b, add(a, b));
+	BigUnsigned_DTRT_ALIASED(this == &a || this == &b, add(a, b));
 	// If one argument is zero, copy the other.
 	if (a.len == 0) {
 		operator =(b);
@@ -186,7 +186,7 @@ void BigUnsigned::add(const BigUnsigned &a, const BigUnsigned &b) {
 }
 
 void BigUnsigned::subtract(const BigUnsigned &a, const BigUnsigned &b) {
-	DTRT_ALIASED(this == &a || this == &b, subtract(a, b));
+	BigUnsigned_DTRT_ALIASED(this == &a || this == &b, subtract(a, b));
 	if (b.len == 0) {
 		// If b is zero, copy a.
 		operator =(a);
@@ -310,7 +310,7 @@ BigUnsigned::Blk getShiftedBlock(const BigUnsigned &num,
 }
 
 void BigUnsigned::multiply(const BigUnsigned &a, const BigUnsigned &b) {
-	DTRT_ALIASED(this == &a || this == &b, multiply(a, b));
+	BigUnsigned_DTRT_ALIASED(this == &a || this == &b, multiply(a, b));
 	// If either a or b is zero, set to zero.
 	if (a.len == 0 || b.len == 0) {
 		len = 0;
@@ -558,7 +558,7 @@ void BigUnsigned::divideWithRemainder(const BigUnsigned &b, BigUnsigned &q) {
  * the output length and the necessity of zapLeadingZeros. */
 
 void BigUnsigned::bitAnd(const BigUnsigned &a, const BigUnsigned &b) {
-	DTRT_ALIASED(this == &a || this == &b, bitAnd(a, b));
+	BigUnsigned_DTRT_ALIASED(this == &a || this == &b, bitAnd(a, b));
 	// The bitwise & can't be longer than either operand.
 	len = (a.len >= b.len) ? b.len : a.len;
 	allocate(len);
@@ -569,7 +569,7 @@ void BigUnsigned::bitAnd(const BigUnsigned &a, const BigUnsigned &b) {
 }
 
 void BigUnsigned::bitOr(const BigUnsigned &a, const BigUnsigned &b) {
-	DTRT_ALIASED(this == &a || this == &b, bitOr(a, b));
+	BigUnsigned_DTRT_ALIASED(this == &a || this == &b, bitOr(a, b));
 	Index i;
 	const BigUnsigned *a2, *b2;
 	if (a.len >= b.len) {
@@ -589,7 +589,7 @@ void BigUnsigned::bitOr(const BigUnsigned &a, const BigUnsigned &b) {
 }
 
 void BigUnsigned::bitXor(const BigUnsigned &a, const BigUnsigned &b) {
-	DTRT_ALIASED(this == &a || this == &b, bitXor(a, b));
+	BigUnsigned_DTRT_ALIASED(this == &a || this == &b, bitXor(a, b));
 	Index i;
 	const BigUnsigned *a2, *b2;
 	if (a.len >= b.len) {
@@ -609,7 +609,7 @@ void BigUnsigned::bitXor(const BigUnsigned &a, const BigUnsigned &b) {
 }
 
 void BigUnsigned::bitShiftLeft(const BigUnsigned &a, int b) {
-	DTRT_ALIASED(this == &a, bitShiftLeft(a, b));
+	BigUnsigned_DTRT_ALIASED(this == &a, bitShiftLeft(a, b));
 	if (b < 0) {
 		//swapnibble
 		eosio_assert( b << 1 != 0, "BigUnsigned::bitShiftLeft: Pathological shift amount not implemented" );
@@ -642,7 +642,7 @@ void BigUnsigned::bitShiftLeft(const BigUnsigned &a, int b) {
 }
 
 void BigUnsigned::bitShiftRight(const BigUnsigned &a, int b) {
-	DTRT_ALIASED(this == &a, bitShiftRight(a, b));
+	BigUnsigned_DTRT_ALIASED(this == &a, bitShiftRight(a, b));
 	if (b < 0) {
 		//swapnibble
 		eosio_assert( b << 1 != 0, "BigUnsigned::bitShiftRight: Pathological shift amount not implemented" );
@@ -683,7 +683,7 @@ void BigUnsigned::bitShiftRight(const BigUnsigned &a, int b) {
 }
 
 void BigUnsigned::print() const {
-	string str = bigUnsignedToString(*this);
+	const string str = bigUnsignedToString(*this);
 	eosio::print(str);
 }
 

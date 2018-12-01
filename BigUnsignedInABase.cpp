@@ -93,7 +93,7 @@ BigUnsignedInABase::BigUnsignedInABase( const string &s, Base base) {
 
 	// `s.length()' is a `size_t', while `len' is a `NumberlikeArray::Index',
 	// also known as an `unsigned int'.  Some compilers warn without this cast.
-	len = Index( s.length() - 1);//swapnibble Index(s.length());
+	len = Index( s.length());//swapnibble Index(s.length());
 	allocate(len);
 
 	Index digitNum, symbolNumInString;
